@@ -7,17 +7,20 @@ import os
 
 class Digit_Recognition_ANN:
 	def __init__(self, dir='models', name='digit_recognition_model.keras'):
-		# Save the trained model
+		# Build dir and path for model
 		cwd = os.path.join(os.getcwd(), dir)
 		os.makedirs(cwd, exist_ok=True)
-		l = os.path.join(cwd, name)
-		print(l, cwd)
+		l = os.path.join(cwd, name) # Combo of [cwd]/dir/name
+		
+		# Define class properties
 		self.dir = dir
 		self.name = name
-		self.location = l
-		self.model = load_model(l) if os.path.isfile(l) else self.build_model()
+		self.location = l 
+		
+		# load current modal or make new if none exsists. 
+		self.model = load_model(l) if os.path.isfile(l) else self.build() 
 
-	def build_model(self, imageSize=[28, 28], layers=2):
+	def build(self, imageSize=[28, 28], layers=2):
 		model = Sequential([
 			# Flatten 28x28 images to a 1D array
 			Flatten(input_shape=(imageSize[0], imageSize[1])),
@@ -49,3 +52,5 @@ class Digit_Recognition_ANN:
 	def save(self):
 		self.model.save(self.location)
 		print("Model saved successfully.")
+		
+	
