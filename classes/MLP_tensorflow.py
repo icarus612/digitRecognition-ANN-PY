@@ -5,17 +5,17 @@ from tensorflow.keras.layers import Flatten, Dense
 import os
 
 
-class Digit_Recognition_ANN:
-	def __init__(self, dir='models', name='digit_recognition_model.keras'):
-		# Build dir and path for model
-		cwd = os.path.join(os.getcwd(), dir)
-		os.makedirs(cwd, exist_ok=True)
-		l = os.path.join(cwd, name) # Combo of [cwd]/dir/name
+class Digit_Recognition_MLP:
+	def __init__(self, name='MLP_TF.keras'):
+		current_file = os.path.abspath(__file__)
+		cd = os.path.dirname(current_file)
+		models_dir = f'{cd}../models'
+		os.makedirs(models_dir, exist_ok=True)
+		location = os.path.join(models_dir, name) # Combo of [cwd]/dir/name
 		
 		# Define class properties
-		self.dir = dir
 		self.name = name
-		self.location = l 
+		self.location = location
 		
 		# load current modal or make new if none exsists. 
 		self.model = load_model(l) if os.path.isfile(l) else self.build() 
@@ -37,7 +37,6 @@ class Digit_Recognition_ANN:
 		(x_train, y_train), (x_test, y_test) = data
 		x_train, x_test = x_train / 255.0, x_test / 255.0
 
-		# Build the model
 
 		# Compile the model
 		self.model.compile(optimizer='adam',
@@ -53,4 +52,7 @@ class Digit_Recognition_ANN:
 		self.model.save(self.location)
 		print("Model saved successfully.")
 		
-	
+if __name__ == "__main__":
+	mlp = Digit_Recognition_MLP()
+	mlp.train()
+	mlp.save()
